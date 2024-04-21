@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "title": "Torta",
+    "description": "Descripción del producto",
+    "price": 5400,
+    "thumbnail": "ruta/imagenA.jpg",
+    "code": "B001",
+    "stock": 5
+  },
+  {
+    "id": 2,
+    "title": "Tarta frutal",
+    "description": "Descripción del producto",
+    "price": 4800,
+    "thumbnail": "ruta/imagenB.jpg",
+    "code": "B002",
+    "stock": 3
+  },
+  {
+    "id": 3,
+    "title": "Lemon Pie",
+    "description": "Descripción del producto",
+    "price": 4000,
+    "thumbnail": "ruta/imagenC.jpg",
+    "code": "B003",
+    "stock": 2
+  },
+  {
+    "id": 4,
+    "title": "Pan dulce",
+    "description": "Descripción del producto",
+    "price": 4500,
+    "thumbnail": "ruta/imagenD.jpg",
+    "code": "B004",
+    "stock": 6
+  },
+  {
+    "id": 5,
+    "title": "Budin",
+    "description": "Descripción del producto",
+    "price": 2500,
+    "thumbnail": "ruta/imagenE.jpg",
+    "code": "B005",
+    "stock": 8
+  },
+  {
+    "id": 6,
+    "title": "Rosca de Pascua",
+    "description": "Descripción del producto",
+    "price": 2800,
+    "thumbnail": "ruta/imagenF.jpg",
+    "code": "B006",
+    "stock": 6
+  },
+  {
+    "id": 7,
+    "title": "Muffins",
+    "description": "Descripción del producto",
+    "price": 4800,
+    "thumbnail": "ruta/imagenG.jpg",
+    "code": "B007",
+    "stock": 12
+  },
+  {
+    "id": 8,
+    "title": "Cookies",
+    "description": "Descripción del producto",
+    "price": 4000,
+    "thumbnail": "ruta/imagenH.jpg",
+    "code": "B008",
+    "stock": 12
+  },
+  {
+    "id": 9,
+    "title": "Torta Marquise",
+    "description": "Descripción del producto",
+    "price": 8200,
+    "thumbnail": "ruta/imagenI.jpg",
+    "code": "B009",
+    "stock": 2
+  },
+  {
+    "id": 10,
+    "title": "Cheesecake",
+    "description": "Descripción del producto",
+    "price": 7000,
+    "thumbnail": "ruta/imagenJ.jpg",
+    "code": "B010",
+    "stock": 3
+  }
+]

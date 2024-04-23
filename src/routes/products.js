@@ -39,8 +39,8 @@ router.post('/', async (req, res) => {
     try {
         const { title, description, price, thumbnail, code, stock, category } = req.body;
 
-        if (!title || !description || !price || !code || !stock || !category) {
-            return res.status(400).json({ error: 'Todos los campos son obligatorios, excepto thumbnail' });
+        if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
+            return res.status(500).json({ error: 'Todos los campos son obligatorios' });
         }
 
         const products = await getProducts();
@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
         products.push(newProduct);
         await saveProducts(products);
 
-        res.status(201).json(newProduct);
+        res.status(201).json({ message: 'Producto agregado correctamente' });
     } catch (error) {
         console.error('Error al agregar un nuevo producto:', error);
         res.status(500).json({ error: 'Error interno del servidor' });

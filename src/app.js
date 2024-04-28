@@ -4,7 +4,8 @@ const app = express()
 const PORT = 8080
 const productsRouter = require("./routes/products.js")
 const cartsRouter = require("./routes/carts.js")
-
+const ProductManager = require ("./classes/productManager.js")
+const productMngr = new ProductManager ('./Productos.json')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

@@ -9,9 +9,11 @@ class ProductManager {
 
     async addProduct(newObject) {
         try {
+            console.log('Datos recibidos en addProduct:', newObject);
+
             const { title, description, price, thumbnail, code, stock, category } = newObject;
 
-            if (!title || !description || !price || !thumbnail || !code || !stock || !category) {
+            if (!title || !description || !price || !code || !stock || !category) {
                 throw new Error('Todos los campos son obligatorios');
             }
 
@@ -33,10 +35,10 @@ class ProductManager {
             products.push(newProduct);
             await this.saveProducts(products);
 
-            return newProduct; 
+            return newProduct;
         } catch (error) {
             console.error('Error al agregar un nuevo producto:', error);
-            throw error; 
+            throw error;
         }
     }
 
@@ -47,7 +49,7 @@ class ProductManager {
             return arrayDeProductos;
         } catch (error) {
             console.error('Error al leer el archivo:', error);
-            throw error; 
+            throw error;
         }
     }
 
@@ -63,7 +65,7 @@ class ProductManager {
             return idProduct;
         } catch (error) {
             console.error('Error al obtener el producto por ID:', error);
-            throw error; 
+            throw error;
         }
     }
 
@@ -80,7 +82,7 @@ class ProductManager {
             }
         } catch (error) {
             console.error('Error al actualizar el producto:', error);
-            throw error; 
+            throw error;
         }
     }
 
@@ -97,7 +99,7 @@ class ProductManager {
             await this.saveProducts(updatedProducts);
         } catch (error) {
             console.error('Error al eliminar el producto:', error);
-            throw error; 
+            throw error;
         }
     }
 
@@ -106,7 +108,7 @@ class ProductManager {
             await fs.writeFile(this.path, JSON.stringify(arrayProducts, null, 2));
         } catch (error) {
             console.error('Error al guardar el archivo:', error);
-            throw error; 
+            throw error;
         }
     }
 }

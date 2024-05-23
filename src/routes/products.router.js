@@ -3,15 +3,40 @@ import productsModel from '../dao/models/products.model.js';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        const products = await productsModel.find().lean();
-        res.status(200).json({ result: "success", payload: products });
+        let query = {};
+
+        // Filtro por categoría
+        if (req.query.category) {
+            query.category = req.query.category;
+        }
+
+        // Ordenamiento por precio
+        let sort = {};
+        if (req.query.sort === 'asc') {
+            sort.price = 1;
+        } else if (req.query.sort === 'desc') {
+            sort.price = -1;
+        }
+
+        const limit = parseInt(req.query.limit) || 5;
+        const page = parseInt(req.query.page) || 1;
+
+        const options = {
+            limit,
+            page,
+            sort
+        };
+
+        const products = await productsModel.paginate(query, options);
+        res.status(200).json(products);
     } catch (error) {
-        console.error("Error al obtener productos:", error);
-        res.status(500).json({ result: "error", error: "Error al obtener productos" });
+        console.log(error);
+        res.status(500).json({ error: "Error interno" });
     }
 });
+
 
 router.post('/', async (req, res) => {
     const { title, description, price, code, stock, category } = req.body;

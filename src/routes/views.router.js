@@ -14,11 +14,20 @@ router.get("/", async (req, res) => {
     }
 })
 
+router.get("/products", async (req, res) => {
+    try {
+        const products = await productsModel.find().lean();
+        res.render("products", { products });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 router.get('/realTimeProducts', (req, res) => {
     res.render('realtimeProducts', {});
 })
 
-router.get("/", async (req, res) => {
+router.get("/carts", async (req, res) => {
     try {
         const carts = await cartsModel.find().lean();
         res.render("carts", { carts });

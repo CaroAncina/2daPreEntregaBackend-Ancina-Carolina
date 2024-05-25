@@ -37,7 +37,6 @@ router.get("/", async (req, res) => {
     }
 });
 
-
 router.post('/', async (req, res) => {
     const { title, description, price, code, stock, category } = req.body;
     if (!title || !description || !price || !code || !stock || !category) {

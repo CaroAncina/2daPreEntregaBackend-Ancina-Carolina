@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
             query.category = req.query.category;
         }
 
-        // Ordenamiento por precio
+        // Ordenar por precio
         let sort = {};
         if (req.query.sort === 'asc') {
             sort.price = 1;
@@ -20,17 +20,34 @@ router.get("/", async (req, res) => {
             sort.price = -1;
         }
 
-        const limit = parseInt(req.query.limit) || 5;
+        //limite 
+        const limit = parseInt(req.query.limit) || 10;
         const page = parseInt(req.query.page) || 1;
 
         const options = {
             limit,
             page,
-            sort
+            sort,
+            lean: true 
         };
 
         const products = await productsModel.paginate(query, options);
-        res.status(200).json(products);
+
+        const result = {
+            status: "success",
+            payload: products.docs,
+            totalPages: products.totalPages,
+            prevPage: products.hasPrevPage ? products.prevPage : null,
+            nextPage: products.hasNextPage ? products.nextPage : null,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: products.hasPrevPage ? `/products?limit=${limit}&page=${products.prevPage}&sort=${req.query.sort || ''}&category=${req.query.category || ''}` : null,
+            nextLink: products.hasNextPage ? `/products?limit=${limit}&page=${products.nextPage}&sort=${req.query.sort || ''}&category=${req.query.category || ''}` : null,
+            isValid: !(page <= 0 || page > products.totalPages)
+        };
+
+        res.render('products', result); 
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error interno" });

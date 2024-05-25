@@ -3,30 +3,30 @@
     <h1>Productos</h1>
     {{#each docs}}
     <div>
-        <h2>{{title}}</h2>
-        <p>Descripción: {{description}}</p>
-        <p>Precio: ${{price}}</p>
-        <p>Categoria: {{category}}</p>
-        <button onclick="showProductDetails('{{_id}}')">Ver detalles</button>
-        <button onclick="addToCart('{{_id}}')">Agregar al carrito</button>
+        <h2>{{this.title}}</h2>
+        <p>Description: {{this.description}}</p>
+        <p>Price: ${{this.price}}</p>
+        <p>Category: {{this.category}}</p>
+        <button onclick="showProductDetails('{{this._id}}')">Ver detalles</button>
+        <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
     </div>
     {{/each}}
 </div>
 
 <div>
     {{#if hasPrevPage}}
-    <a href={{this.prevLink}}>
-        << Anterior</a>
-            {{/if}}
-            &nbsp;
-            {{this.page}}
-            &nbsp;
-            {{#if hasNextPage}}
-            <a href={{this.nextLink}}>Siguiente >></a>
-            {{/if}}
+    <a href="{{prevLink}}">&lt;&lt; Anterior</a>
+    {{/if}}
+    &nbsp;
+    Página {{page}} de {{totalPages}}
+    &nbsp;
+    {{#if hasNextPage}}
+    <a href="{{nextLink}}">Siguiente &gt;&gt;</a>
+    {{/if}}
 </div>
+
 {{else}}
-<h1>No hay productos para mostrar</h1>
+<p>No hay productos para mostrar</p>
 {{/if}}
 
 <script src="/socket.io/socket.io.js"></script>

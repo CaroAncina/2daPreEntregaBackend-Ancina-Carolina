@@ -16,18 +16,39 @@ router.get("/", async (req, res) => {
 
 router.get('/', (req, res) => {
     res.render('home', {});
-})
+});
 
 router.get("/products", async (req, res) => {
-    let page = parseInt(req.query.page);
-    if (!page) page = 1;
-    let result = await productsModel.paginate({}, { page, limit: 5, lean: true })
-    result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}` : '';
-    result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}` : '';
-    result.isValid = !(page <= 0 || page > result.totalPages)
-    res.render('products', result)
-})
+    let { page = 1, limit = 10, sort, category } = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
 
+    let query = {};
+    if (category) {
+        query.category = category;
+    }
+
+    let sortOption = {};
+    if (sort === 'asc') {
+        sortOption.price = 1;
+    } else if (sort === 'desc') {
+        sortOption.price = -1;
+    }
+
+    let options = {
+        page,
+        limit,
+        sort: sortOption,
+        lean: true
+    };
+
+    let result = await productsModel.paginate(query, options);
+    result.prevLink = result.hasPrevPage ? `/products?page=${result.prevPage}&limit=${limit}&sort=${sort || ''}&category=${category || ''}` : '';
+    result.nextLink = result.hasNextPage ? `/products?page=${result.nextPage}&limit=${limit}&sort=${sort || ''}&category=${category || ''}` : '';
+    result.isValid = !(page <= 0 || page > result.totalPages);
+
+    res.render('products', result);
+});
 
 router.get('/realTimeProducts', (req, res) => {
     res.render('realtimeProducts', {});

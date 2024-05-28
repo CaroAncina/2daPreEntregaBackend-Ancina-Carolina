@@ -1,8 +1,10 @@
 import { Router } from "express";
 import productsModel from '../dao/models/products.model.js';
+import cartsModel from "../dao/models/carts.model.js";
 
 const router = Router();
 
+//muestra los productos 
 router.get("/", async (req, res) => {
     try {
         let query = {};
@@ -54,6 +56,7 @@ router.get("/", async (req, res) => {
     }
 });
 
+//agrega un producto a la lista de productos
 router.post('/', async (req, res) => {
     const { title, description, price, code, stock, category } = req.body;
     if (!title || !description || !price || !code || !stock || !category) {
@@ -68,6 +71,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+//actualiza un producto
 router.put('/:uid', async (req, res) => {
     const { uid } = req.params;
     const updatedProduct = req.body;
@@ -80,6 +84,7 @@ router.put('/:uid', async (req, res) => {
     }
 });
 
+//elimina un producto
 router.delete('/:uid', async (req, res) => {
     const { uid } = req.params;
     try {

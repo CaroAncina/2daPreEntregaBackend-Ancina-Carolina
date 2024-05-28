@@ -4,11 +4,11 @@
     {{#each docs}}
     <div>
         <h2>{{this.title}}</h2>
-        <p>Description: {{this.description}}</p>
-        <p>Price: ${{this.price}}</p>
-        <p>Category: {{this.category}}</p>
-        <button onclick="showProductDetails('{{this._id}}')">Ver detalles</button>
-        <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+        <p>Descripción: {{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <p>Categoria: {{this.category}}</p>
+        <button onclick="showProductDetails('{{$this._pid}}')">Ver detalles</button>
+        <button onclick="addToCart('{{$this._cid}}', '{{$this._pid}}')">Agregar al carrito</button>
     </div>
     {{/each}}
 </div>

@@ -57,7 +57,7 @@ router.get('/realTimeProducts', (req, res) => {
 router.get("/carts", async (req, res) => {
     try {
         const carts = await cartsModel.find().lean();
-        res.render("carts", { carts });
+        res.render("carts", {carts});
     } catch (error) {
         console.log(error);
     }

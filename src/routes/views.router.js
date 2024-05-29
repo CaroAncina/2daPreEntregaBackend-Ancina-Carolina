@@ -14,10 +14,6 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get('/', (req, res) => {
-    res.render('home', {});
-});
-
 router.get("/products", async (req, res) => {
     let { page = 1, limit = 10, sort, category } = req.query;
     page = parseInt(page);
@@ -50,16 +46,50 @@ router.get("/products", async (req, res) => {
     res.render('products', result);
 });
 
+// Muestra un producto por su id
+router.get('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const product = await productsModel.findById(productId).lean();
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+
+        res.render('productDetail', { product });
+    } catch (error) {
+        console.error('Error al obtener los detalles del producto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
+
+
 router.get('/realTimeProducts', (req, res) => {
     res.render('realtimeProducts', {});
 })
 
 router.get("/carts", async (req, res) => {
     try {
-        const carts = await cartsModel.find().lean();
-        res.render("carts", {carts});
+        const carts = await cartsModel.find().populate('products').lean();
+        res.render("carts", { carts });
     } catch (error) {
         console.log(error);
+    }
+})
+
+router.get("/carts/:cid", async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartsModel.findById(cartId).populate('products.product').lean();
+
+        if (!cart) {
+            return res.status(404).json({ error: 'Carrito no encontrado' });
+        }
+        res.render('cartProducts', { cart: cart });
+
+    } catch (error) {
+        console.error('Error al obtener el carrito:', error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
     }
 })
 

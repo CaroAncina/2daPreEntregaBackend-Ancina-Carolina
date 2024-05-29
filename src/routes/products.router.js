@@ -1,6 +1,5 @@
 import { Router } from "express";
 import productsModel from '../dao/models/products.model.js';
-import cartsModel from "../dao/models/carts.model.js";
 
 const router = Router();
 
@@ -30,7 +29,7 @@ router.get("/", async (req, res) => {
             limit,
             page,
             sort,
-            lean: true 
+            lean: true
         };
 
         const products = await productsModel.paginate(query, options);
@@ -49,10 +48,27 @@ router.get("/", async (req, res) => {
             isValid: !(page <= 0 || page > products.totalPages)
         };
 
-        res.render('products', result); 
+        res.render('products', result);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error interno" });
+    }
+});
+
+// Muestra un producto por su id
+router.get('/:pid', async (req, res) => {
+    try {
+        const productId = req.params.pid;
+        const product = await productsModel.findById(productId).lean();
+
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+
+        res.status(200).json({ result: "success", product });
+    } catch (error) {
+        console.error('Error al obtener los detalles del producto:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 

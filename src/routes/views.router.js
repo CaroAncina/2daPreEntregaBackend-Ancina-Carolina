@@ -47,7 +47,7 @@ router.get("/products", async (req, res) => {
 });
 
 // Muestra un producto por su id
-router.get('/:pid', async (req, res) => {
+router.get('/products/:pid', async (req, res) => {
     try {
         const productId = req.params.pid;
         const product = await productsModel.findById(productId).lean();
@@ -62,7 +62,6 @@ router.get('/:pid', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
-
 
 router.get('/realTimeProducts', (req, res) => {
     res.render('realtimeProducts', {});

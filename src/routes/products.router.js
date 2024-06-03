@@ -48,7 +48,7 @@ router.get("/", async (req, res) => {
             isValid: !(page <= 0 || page > products.totalPages)
         };
 
-        res.render('products', result);
+        res.status(200).json({ result: "success", products });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error interno" });

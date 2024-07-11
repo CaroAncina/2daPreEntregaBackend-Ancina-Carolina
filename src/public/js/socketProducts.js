@@ -1,5 +1,5 @@
-import productsModel from '../../dao/models/productsModel.js';
-import messagesModel from '../../dao/models/messagesModel.js';
+import productsModel from '../../dao/mongo/models/productsModel.js';
+import messagesModel from '../../dao/mongo/models/messagesModel.js';
 
 export default (io) => {
     io.on('connection', (socket) => {

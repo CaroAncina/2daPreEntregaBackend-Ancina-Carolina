@@ -1,4 +1,4 @@
-import User from '../models/usersModel.js';
+import User from '../mongo/models/usersModel.js';
 
 export default class UserMongoDAO {
     static async findAll() {

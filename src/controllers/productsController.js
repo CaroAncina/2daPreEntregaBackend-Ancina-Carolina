@@ -17,7 +17,7 @@ export const getAllProducts = async (req, res) => {
             sort.price = -1;
         }
 
-        // Limite
+        // Límite
         const limit = parseInt(req.query.limit) || 5;
         const page = parseInt(req.query.page) || 1;
 
@@ -44,9 +44,9 @@ export const getAllProducts = async (req, res) => {
             isValid: !(page <= 0 || page > products.totalPages)
         };
 
-        res.status(200).json({ result: "success", products });
+        res.status(200).json({ result: "success", products: result });
     } catch (error) {
-        console.log(error);
+        console.error("Error al obtener productos:", error);
         res.status(500).json({ error: "Error interno" });
     }
 };

@@ -1,19 +1,5 @@
 import UserService from '../services/usersService.js';
 
-export const getUserByEmail = async (req, res) => {
-    try {
-        const email = req.params.email;
-        const user = await UserService.getUserByEmail(email);
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-        res.status(200).json({ result: "success", user });
-    } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
-};
-
 export const createUser = async (req, res) => {
     const { first_name, last_name, email, password, age } = req.body;
     if (!first_name || !last_name || !email || !password || !age) {
@@ -28,12 +14,26 @@ export const createUser = async (req, res) => {
     }
 };
 
-export const getAllUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
     try {
-        const users = await UserService.getAllUsers();
+        const users = await UserService.getUsers();
         res.status(200).json({ result: "success", users });
     } catch (error) {
         console.error('Error al obtener todos los usuarios:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};
+
+export const getUserById = async (req, res) => {
+    const { uid } = req.params;
+    try {
+        const user = await UserService.getUserById(uid);
+        if (!user) {
+            return res.status(404).json({ result: "error", error: "Usuario no encontrado" });
+        }
+        res.status(200).json({ result: "success", payload: user });
+    } catch (error) {
+        console.error('Error al obtener el usuario por ID:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };

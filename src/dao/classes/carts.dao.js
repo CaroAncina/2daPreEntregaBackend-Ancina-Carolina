@@ -1,4 +1,4 @@
-import cartsModel from '../../dao/models/cartsModel.js';
+import cartsModel from '../../dao/mongo/models/cartsModel.js';
 
 class CartsMongoDAO {
     async findAll() {

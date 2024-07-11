@@ -1,45 +1,30 @@
-import UserMongoDAO from '../dao/classes/users.dao.js';
+import { Users } from '../dao/factory.js';
+import UsersRepository from '../repositories/Users.repository.js';
 
 class UserService {
-    static async createUser(userData) {
-        try {
-            return await UserMongoDAO.create(userData);
-        } catch (error) {
-            throw new Error('Error al crear usuario');
-        }
+    constructor() {
+        this.repository = new UsersRepository(Users);
     }
 
-    static async getUserByEmail(email) {
-        try {
-            return await UserMongoDAO.findByEmail(email);
-        } catch (error) {
-            throw new Error('Error al obtener usuario por email');
-        }
+    async getUsers() {
+        return await this.repository.getUsers();
     }
 
-    static async getAllUsers() {
-        try {
-            return await UserMongoDAO.findAll();
-        } catch (error) {
-            throw new Error('Error al obtener todos los usuarios');
-        }
+    async createUser(user) {
+        return await this.repository.createUser(user);
     }
 
-    static async updateUser(uid, updatedUser) {
-        try {
-            return await UserMongoDAO.update(uid, updatedUser);
-        } catch (error) {
-            throw new Error('Error al actualizar usuario');
-        }
+    async getUserById(id) {
+        return await this.repository.getUserById(id);
     }
 
-    static async deleteUser(uid) {
-        try {
-            return await UserMongoDAO.delete(uid);
-        } catch (error) {
-            throw new Error('Error al eliminar usuario');
-        }
+    async updateUser(id, updateUser) {
+        return await this.repository.updateUser(id, updateUser);
+    }
+
+    async deleteUser(id) {
+        return await this.repository.deleteUser(id);
     }
 }
 
-export default UserService;
+export default new UserService();

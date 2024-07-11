@@ -16,5 +16,6 @@ db.once('open', () => {
 export default {
     port: process.env.PORT || 8080,
     mongoURI: process.env.MONGODB,
-    sessionSecret: process.env.SESSION_SECRET || 'secretkey'
+    sessionSecret: process.env.SESSION_SECRET || 'secretkey',
+    persistence: process.env.PERSISTENCE 
 };

@@ -1,9 +1,9 @@
 <div id="chat">
-    <h1>Chat </h1>
+    <h1>Chat</h1>
 
     <div id="chat-messages">
         {{#each messages}}
-        <p><strong>{{user}}</strong>: {{message}}</p>
+        <p><strong>{{this.user}}</strong>: {{this.text}}</p>
         {{/each}}
     </div>
 
@@ -15,5 +15,4 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
-
 </div>

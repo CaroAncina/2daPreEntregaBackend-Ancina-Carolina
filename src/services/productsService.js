@@ -1,30 +1,23 @@
-import { Products } from '../dao/factory.js';
-import ProductsRepository from '../repositories/Products.repository.js';
+import productsModel from '../dao/models/productsModel.js';
 
-class ProductService {
-    constructor() {
-        this.repository = new ProductsRepository(Products);
+export default class ProductService {
+    static async getAllProducts(query, options) {
+        return productsModel.paginate(query, options);
     }
 
-    async getAllProducts(query, options) {
-        return await this.repository.getAllProducts(query, options);
+    static async getProductById(id) {
+        return productsModel.findById(id).lean();
     }
 
-    async getProductById(id) {
-        return await this.repository.getProductById(id);
+    static async createProduct(productData) {
+        return productsModel.create(productData);
     }
 
-    async createProduct(product) {
-        return await this.repository.createProduct(product);
+    static async updateProduct(id, productData) {
+        return productsModel.updateOne({ _id: id }, productData);
     }
 
-    async updateProduct(id, updateProduct) {
-        return await this.repository.updateProduct(id, updateProduct);
-    }
-
-    async deleteProduct(id) {
-        return await this.repository.deleteProduct(id);
+    static async deleteProduct(id) {
+        return productsModel.deleteOne({ _id: id });
     }
 }
-
-export default new ProductService();

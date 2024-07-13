@@ -1,37 +1,59 @@
-import { usersRepository, cartsRepository } from '../repositories/index.js';
+import UserMongoDAO from '../dao/classes/users.dao.js';
+import CartMongoDAO from '../dao/classes/carts.dao.js';
 import { createHash } from '../utils.js';
 
 class UserService {
-    constructor() {
-        this.usersRepository = usersRepository;
-        this.cartsRepository = cartsRepository;
-    }
-
-    async getUsers() {
-        return await this.usersRepository.getUsers();
-    }
-
-    async createUser(user) {
-        const cart = await this.cartsRepository.createCart();
-        user.cart = cart.id;
-        user.password = createHash(user.password);
-        return await this.usersRepository.createUser(user);
-    }
-
-    async getUserById(id) {
-        return await this.usersRepository.getUserById(id);
-    }
-
-    async updateUser(id, updateUser) {
-        if (updateUser.password) {
-            updateUser.password = createHash(updateUser.password);
+    static async createUser(userData) {
+        try {
+            const existingUser = await UserMongoDAO.findByEmail(userData.email);
+            if (existingUser) {
+                throw new Error('El correo electrónico ya está en uso');
+            }
+            userData.password = createHash(userData.password);
+            const newCart = await CartMongoDAO.create({ products: [] });
+            userData.cart = newCart._id;
+            const result = await UserMongoDAO.create(userData);
+            return result;
+        } catch (error) {
+            console.error("Error details:", error);
+            throw new Error('Error al crear usuario');
         }
-        return await this.usersRepository.updateUser(id, updateUser);
     }
 
-    async deleteUser(id) {
-        return await this.usersRepository.deleteUser(id);
+    static async getUserByEmail(email) {
+        try {
+            return await UserMongoDAO.findByEmail(email);
+        } catch (error) {
+            throw new Error('Error al obtener usuario por email');
+        }
+    }
+
+    static async getAllUsers() {
+        try {
+            return await UserMongoDAO.findAll();
+        } catch (error) {
+            throw new Error('Error al obtener todos los usuarios');
+        }
+    }
+
+    static async updateUser(uid, updatedUser) {
+        try {
+            if (updatedUser.password) {
+                updatedUser.password = createHash(updatedUser.password);
+            }
+            return await UserMongoDAO.update(uid, updatedUser);
+        } catch (error) {
+            throw new Error('Error al actualizar usuario');
+        }
+    }
+
+    static async deleteUser(uid) {
+        try {
+            return await UserMongoDAO.delete(uid);
+        } catch (error) {
+            throw new Error('Error al eliminar usuario');
+        }
     }
 }
 
-export default new UserService();
+export default UserService;

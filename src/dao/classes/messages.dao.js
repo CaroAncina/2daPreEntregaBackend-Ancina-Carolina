@@ -1,4 +1,4 @@
-import messagesModel from '../mongo/models/messagesModel.js';
+import messagesModel from '../models/messagesModel.js';
 
 class MessagesMongoDAO {
     async findAll() {

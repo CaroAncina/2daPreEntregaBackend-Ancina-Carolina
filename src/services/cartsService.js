@@ -1,36 +1,52 @@
-import { cartsRepository } from '../repositories/index.js';
+import userService from '../dao/models/usersModel.js';
+import CartsMongoDAO from '../dao/classes/carts.dao.js';
 
 class CartService {
-    constructor() {
-        this.repository = cartsRepository;
-    }
-
     async getCarts() {
-        return await this.repository.getCarts();
+        return await CartsMongoDAO.findAll();
     }
 
-    async getCartById(id) {
-        return await this.repository.getCartById(id);
+    async getCartById(cartId) {
+        return await CartsMongoDAO.findById(cartId);
     }
 
     async createCart() {
-        return await this.repository.createCart();
+        return await CartsMongoDAO.create();
     }
 
-    async addProductToCart(cartId, product) {
-        return await this.repository.addProductToCart(cartId, product);
+    async addProductToCart(userId, productId) {
+        try {
+            const user = await userService.findById(userId).populate('cart').lean();
+            if (!user || !user.cart) {
+                throw new Error('Carrito no encontrado');
+            }
+
+            const cart = await CartsMongoDAO.findById(user.cart._id);
+            const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
+
+            if (productIndex !== -1) {
+                cart.products[productIndex].quantity += 1;
+            } else {
+                cart.products.push({ product: productId, quantity: 1 });
+            }
+            await cart.save();
+            return cart;
+        } catch (error) {
+            console.error('Error al agregar producto al carrito:', error);
+            throw error;
+        }
     }
 
     async updateProductQuantity(cartId, productId, quantity) {
-        return await this.repository.updateProductQuantity(cartId, productId, quantity);
+        return await CartsMongoDAO.updateProductQuantity(cartId, productId, quantity);
     }
 
     async clearCart(cartId) {
-        return await this.repository.clearCart(cartId);
+        return await CartsMongoDAO.clearCart(cartId);
     }
 
     async removeProductFromCart(cartId, productId) {
-        return await this.repository.removeProductFromCart(cartId, productId);
+        return await CartsMongoDAO.removeProductFromCart(cartId, productId);
     }
 }
 

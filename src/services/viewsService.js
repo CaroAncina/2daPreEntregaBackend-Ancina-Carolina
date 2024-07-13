@@ -1,6 +1,6 @@
-import productsModel from '../dao/mongo/models/productsModel.js';
-import messagesModel from '../dao/mongo/models/messagesModel.js';
-import cartsModel from '../dao/mongo/models/cartsModel.js';
+import productsModel from '../dao/models/productsModel.js';
+import messagesModel from '../dao/models/messagesModel.js';
+import cartsModel from '../dao/models/cartsModel.js';
 
 class ViewsService {
     async getProducts(page = 1, limit = 5, sort, category, user) {

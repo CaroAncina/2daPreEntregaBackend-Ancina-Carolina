@@ -1,6 +1,4 @@
 import ProductService from '../services/productsService.js';
-import { Users } from '../dao/factory.js';
-import UserDTO from '../dao/DTOs/users.dto.js';
 
 export const getAllProducts = async (req, res) => {
     try {
@@ -19,7 +17,7 @@ export const getAllProducts = async (req, res) => {
             sort.price = -1;
         }
 
-        // Límite
+        // Limite
         const limit = parseInt(req.query.limit) || 5;
         const page = parseInt(req.query.page) || 1;
 
@@ -46,9 +44,9 @@ export const getAllProducts = async (req, res) => {
             isValid: !(page <= 0 || page > products.totalPages)
         };
 
-        res.status(200).json({ result: "success", products: result });
+        res.status(200).json({ result: "success", products });
     } catch (error) {
-        console.error("Error al obtener productos:", error);
+        console.log(error);
         res.status(500).json({ error: "Error interno" });
     }
 };

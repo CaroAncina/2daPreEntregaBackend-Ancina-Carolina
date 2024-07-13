@@ -1,5 +1,5 @@
 import MessagesMongoDAO from '../dao/classes/messages.dao.js';
-import userService from '../dao/mongo/models/usersModel.js';
+import userService from '../dao/models/usersModel.js';
 
 export default class MessageService {
     static async getMessages() {

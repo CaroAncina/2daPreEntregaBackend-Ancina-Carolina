@@ -1,4 +1,4 @@
-# Proyecto ReactJS-AncinaCarolina
+# Proyecto Curso Backend
 ## **Antojitos|Tienda de comestibles**
 
 Proyecto del curso de Backend de CoderHouse. Se desarrollará un servidor que contenga los endpoints y servicios necesarios para gestionar los productos y carritos de compra en el e-commerce.

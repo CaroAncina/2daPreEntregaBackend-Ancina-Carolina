@@ -1,7 +1,7 @@
 // routes/cartsRouter.js
 import { Router } from 'express';
-import { isAuthenticated } from '../middleware/auth.js';
-import { getCarts, getCartById, createCart, addProductToCart, updateProductQuantity, clearCart, removeProductFromCart } from '../controllers/cartsController.js';
+import { isAuthenticated } from '../../middleware/auth.js';
+import { getCarts, getCartById, createCart, addProductToCart, updateProductQuantity, clearCart, removeProductFromCart } from '../../controllers/cartsController.js';
 
 const router = Router();
 

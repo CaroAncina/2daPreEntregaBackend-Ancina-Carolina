@@ -1,4 +1,6 @@
 import ProductService from '../services/productsService.js';
+import { Users } from '../dao/factory.js';
+import UserDTO from '../dao/DTOs/users.dto.js';
 
 export const getAllProducts = async (req, res) => {
     try {

@@ -1,28 +1,25 @@
-import usersModel from './models/usersModel.js';
+import usersModel from '../mongo/models/usersModel.js';
 
 export default class UsersMongo {
-    async get() {
-        let users = await usersModel.find();
-        return users;
+    async getUsers() {
+        return await usersModel.find();
     }
 
-    async create(user) {
-        let newUser = await usersModel.create(user);
-        return newUser;
+    async createUser(user) {
+        return await usersModel.create(user);
+
     }
 
-    async findById(id) {
-        let user = await usersModel.findById(id);
-        return user;
+    async getUserById(id) {
+        return await usersModel.findById(id);
     }
 
-    async update(id, updateUser) {
-        let updatedUser = await usersModel.findByIdAndUpdate(id, updateUser, { new: true });
-        return updatedUser;
+    async updateUser(id, updateUser) {
+        return await usersModel.findByIdAndUpdate(id, updateUser, { new: true });
     }
 
-    async delete(id) {
-        let deletedUser = await usersModel.findByIdAndDelete(id);
-        return deletedUser;
+    async deleteUser(id) {
+        return await usersModel.findByIdAndDelete(id);
+
     }
 }

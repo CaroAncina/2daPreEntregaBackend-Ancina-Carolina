@@ -1,6 +1,6 @@
 import { Router } from "express";
-import viewsController from '../controllers/viewsController.js';
-import { isAuthenticated, isNotAuthenticated } from '../middleware/auth.js';
+import viewsController from '../../controllers/viewsController.js';
+import { isAuthenticated, isNotAuthenticated } from '../../middleware/auth.js';
 
 const router = Router();
 

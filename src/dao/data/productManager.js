@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 
 class ProductManager {
     static lastId = 0;
@@ -113,4 +113,4 @@ class ProductManager {
     }
 }
 
-module.exports = ProductManager;
+export default ProductManager;

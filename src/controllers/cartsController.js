@@ -26,20 +26,12 @@ export const getCartById = async (req, res) => {
     }
 };
 
-export const createCart = async (req, res) => {
-    try {
-        const newCart = await CartService.createCart();
-        res.status(201).json({ result: "success", payload: newCart });
-    } catch (error) {
-        console.error("Error al crear carrito:", error);
-        res.status(500).json({ result: "error", error: "Error al crear carrito" });
-    }
-};
+
 
 export const addProductToCart = async (req, res) => {
     try {
-        const pid = req.params.pid;
-        const user = req.user;
+        const { pid } = req.params;
+        const { user } = req;
 
         if (!user) {
             return res.status(401).json({ error: 'Usuario no autenticado' });

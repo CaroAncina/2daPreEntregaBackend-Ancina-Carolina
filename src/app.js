@@ -26,7 +26,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 // Handlebars 
-app.engine('handlebars', handlebars.engine());
+const hbs = handlebars.create({
+    helpers: {
+        eq: function (a, b) {
+            return a === b;
+        }
+    }
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 

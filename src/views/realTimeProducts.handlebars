@@ -1,7 +1,8 @@
 <div id="form_style">
-
     <h2>Agregar Nuevo Producto</h2>
+    {{#if (eq user.role "admin")}}
     <form id="add-product-form">
+        <input type="hidden" id="userRole" value="{{user.role}}">
         <label for="title">Título:</label>
         <input type="text" id="title" name="title" required><br>
 
@@ -25,6 +26,10 @@
 
         <button type="button" id="btnEnviar">Enviar</button>
     </form>
+    {{else}}
+    <input type="hidden" id="userRole" value="{{user.role}}">
+    <p>No tienes permisos para agregar productos.</p>
+    {{/if}}
     <div id="listaProductos"></div>
 </div>
 

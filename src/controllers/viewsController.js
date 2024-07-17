@@ -31,8 +31,9 @@ class ViewsController {
     }
 
     getRealTimeProducts(req, res) {
-        res.render('realtimeProducts', {});
+        res.render('realtimeProducts', { user: req.session.user });
     }
+    
 
     async getCartDetails(req, res) {
         try {
@@ -69,6 +70,8 @@ class ViewsController {
     getProfilePage(req, res) {
         res.render('profile', { user: req.session.user });
     }
+
+
 }
 
 export default new ViewsController();

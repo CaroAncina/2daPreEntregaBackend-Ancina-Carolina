@@ -10,8 +10,15 @@ class UserService {
                 throw new Error('El correo electrónico ya está en uso');
             }
             userData.password = createHash(userData.password);
-            const newCart = await CartMongoDAO.create({ products: [] });
-            userData.cart = newCart._id;
+
+            if (userData.email === 'adminCoder@coder.com') {
+                userData.role = 'admin';
+            } else {
+                userData.role = 'user';
+                const newCart = await CartMongoDAO.create({ products: [] });
+                userData.cart = newCart._id;
+            }
+
             const result = await UserMongoDAO.create(userData);
             return result;
         } catch (error) {

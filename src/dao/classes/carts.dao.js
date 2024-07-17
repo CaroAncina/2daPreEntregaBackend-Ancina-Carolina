@@ -9,6 +9,11 @@ class CartsMongoDAO {
         return await cartsModel.findById(id);
     }
 
+    async create(data) {
+        const newCart = new cartsModel(data);
+        return await newCart.save();
+    }
+
     async updateProductQuantity(cartId, productId, quantity) {
         const cart = await cartsModel.findById(cartId);
         const productIndex = cart.products.findIndex(p => p.product.toString() === productId);

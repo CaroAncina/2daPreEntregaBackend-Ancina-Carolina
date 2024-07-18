@@ -46,6 +46,14 @@ class SessionsController {
         };
         res.redirect('/products');
     }
+
+    async current(req, res) {
+        if (req.session.user) {
+            res.status(200).json(req.session.user);
+        } else {
+            res.status(401).json({ error: 'Usuario no autenticado' });
+        }
+    }
 }
 
 export default new SessionsController();

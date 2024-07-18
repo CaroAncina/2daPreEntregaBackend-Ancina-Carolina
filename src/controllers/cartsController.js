@@ -26,8 +26,6 @@ export const getCartById = async (req, res) => {
     }
 };
 
-
-
 export const addProductToCart = async (req, res) => {
     try {
         const { pid } = req.params;

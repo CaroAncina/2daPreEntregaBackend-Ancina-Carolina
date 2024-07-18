@@ -27,6 +27,10 @@ const githubCallback = (req, res) => {
     res.status(200).json({ message: "Autenticacion de GitHub exitosa" });
 };
 
+const current = (req, res)=>{
+    res.status(200).json({message:"Error de autenticación"})
+}
+
 export default {
     register,
     failRegister,
@@ -34,5 +38,6 @@ export default {
     failLogin,
     logout,
     github,
-    githubCallback
+    githubCallback,
+    current
 };

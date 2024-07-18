@@ -31,9 +31,12 @@ class ViewsController {
     }
 
     getRealTimeProducts(req, res) {
-        res.render('realtimeProducts', { user: req.session.user });
+        if (req.session.user && req.session.user.role === 'admin') {
+            res.render('realTimeProducts', { user: req.session.user });
+        } else {
+            res.status(403).send('Acceso denegado');
+        }
     }
-    
 
     async getCartDetails(req, res) {
         try {
@@ -59,6 +62,10 @@ class ViewsController {
         }
     }
 
+    async currentPage(req,res){
+        res.render('/current')
+    }
+
     getLoginPage(req, res) {
         res.render('login');
     }
@@ -70,8 +77,6 @@ class ViewsController {
     getProfilePage(req, res) {
         res.render('profile', { user: req.session.user });
     }
-
-
 }
 
 export default new ViewsController();

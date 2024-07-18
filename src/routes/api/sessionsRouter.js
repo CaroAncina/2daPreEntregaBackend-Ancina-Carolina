@@ -12,5 +12,6 @@ router.post('/logout', sessionsController.logout);
 router.get('/logout', sessionsController.logout);
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), sessionsController.github);
 router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), sessionsController.githubCallback);
+router.get('/current', sessionsController.current);  
 
 export default router;

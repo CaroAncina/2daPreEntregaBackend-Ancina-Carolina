@@ -68,12 +68,16 @@ export const getProductById = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-    const { title, description, price, code, stock, category } = req.body;
+    const { title, description, price, code, stock, category, thumbnail } = req.body;
     if (!title || !description || !price || !code || !stock || !category) {
         return res.status(400).json({ result: "error", error: "Faltan parámetros obligatorios" });
     }
     try {
-        const newProduct = await ProductService.createProduct({ title, description, price, code, stock, category });
+        const productData = { title, description, price, code, stock, category };
+        if (thumbnail) {
+            productData.thumbnail = thumbnail;
+        }
+        const newProduct = await ProductService.createProduct(productData);
         res.status(201).json({ result: "success", payload: newProduct });
     } catch (error) {
         console.error("Error al crear producto:", error);
@@ -82,11 +86,14 @@ export const createProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
-    const { uid } = req.params;
-    const updatedProduct = req.body;
+    const { pid } = req.params;
+    const { title, description, price, code, stock, category, thumbnail } = req.body;
     try {
-        const result = await ProductService.updateProduct(uid, updatedProduct);
-        res.status(200).json({ result: "success", payload: result });
+        const updatedProduct = await ProductService.updateProduct(pid, { title, description, price, code, stock, category, thumbnail });
+        if (!updatedProduct) {
+            return res.status(404).json({ result: "error", error: "Producto no encontrado" });
+        }
+        res.status(200).json({ result: "success", payload: updatedProduct });
     } catch (error) {
         console.error("Error al actualizar producto:", error);
         res.status(500).json({ result: "error", error: "Error al actualizar producto" });
@@ -94,10 +101,13 @@ export const updateProduct = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
-    const { uid } = req.params;
+    const { pid } = req.params;
     try {
-        const result = await ProductService.deleteProduct(uid);
-        res.status(200).json({ result: "success", payload: result });
+        const deletedProduct = await ProductService.deleteProduct(pid);
+        if (!deletedProduct) {
+            return res.status(404).json({ result: "error", error: "Producto no encontrado" });
+        }
+        res.status(200).json({ result: "success", payload: deletedProduct });
     } catch (error) {
         console.error("Error al eliminar producto:", error);
         res.status(500).json({ result: "error", error: "Error al eliminar producto" });

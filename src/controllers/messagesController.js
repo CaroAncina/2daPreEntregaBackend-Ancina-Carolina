@@ -11,19 +11,17 @@ export const getMessages = async (req, res) => {
 };
 
 export const createMessage = async (req, res) => {
-    const { userId, messageText } = req.body; 
+    const { user, message } = req.body;
 
-    if (!userId || !messageText) {
+    if (!user || !message) {
         return res.status(400).json({ status: "error", error: "Faltan parámetros" });
     }
 
     try {
-        const newMessage = await MessageService.createMessage(userId, messageText);
+        const newMessage = await MessageService.createMessage(user, message);
         res.status(201).json({ status: "success", payload: newMessage });
     } catch (error) {
         console.error('Error al guardar el mensaje:', error);
         res.status(500).json({ status: "error", error: 'Error al guardar el mensaje' });
     }
 };
-
-export default { getMessages, createMessage };

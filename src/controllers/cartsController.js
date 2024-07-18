@@ -1,4 +1,6 @@
 import CartService from '../services/cartsService.js';
+import ProductModel from '../dao/models/productsModel.js';
+import ticketsService from '../services/ticketsService.js';
 
 export const getCarts = async (req, res) => {
     try {
@@ -75,5 +77,45 @@ export const removeProductFromCart = async (req, res) => {
     } catch (error) {
         console.error("Error al eliminar producto del carrito:", error);
         res.status(500).json({ result: "error", error: "Error al eliminar producto del carrito" });
+    }
+};
+
+//endpoint para la compra
+export const purchaseCart = async (req, res) => {
+    const { cid } = req.params;
+    try {
+        const cart = await CartService.getCartById(cid);
+        if (!cart) {
+            return res.status(404).json({ error: 'Carrito no encontrado' });
+        }
+
+        let totalAmount = 0;
+        const productsNotPurchased = [];
+
+        for (const item of cart.products) {
+            const product = await ProductModel.findById(item.product);
+            if (product.stock >= item.quantity) {
+                product.stock -= item.quantity;
+                totalAmount += product.price * item.quantity;
+                await product.save();
+            } else {
+                productsNotPurchased.push(item.product);
+            }
+        }
+
+        if (totalAmount > 0) {
+            await ticketsService.createTicket(totalAmount, req.session.user.email);
+        }
+
+        cart.products = cart.products.filter(item => productsNotPurchased.includes(item.product));
+        await cart.save();
+
+        res.status(200).json({
+            message: 'Compra realizada con éxito',
+            productsNotPurchased
+        });
+    } catch (error) {
+        console.error('Error al procesar la compra:', error);
+        res.status(500).json({ error: 'Error al procesar la compra' });
     }
 };

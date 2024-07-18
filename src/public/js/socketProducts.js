@@ -61,8 +61,8 @@ export default (io) => {
                 });
         });
 
-        // CHAT
-        messagesModel.find().then((mensajes) => {
+         //CHAT
+         messagesModel.find().populate('user').lean().then((mensajes) => {
             socket.emit('mensajes', mensajes);
         });
 

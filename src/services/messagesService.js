@@ -8,7 +8,7 @@ export default class MessageService {
 
     static async createMessage(userId, messageText) {
         try {
-            const user = await userService.getUserById(userId);
+            const user = await userService.findById(userId);
             if (!user) {
                 throw new Error(`Usuario con ID ${userId} no encontrado`);
             }

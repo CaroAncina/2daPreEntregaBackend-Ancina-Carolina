@@ -4,12 +4,10 @@ const ticketSchema = new mongoose.Schema({
     code: {
         type: String,
         required: true,
-        unique: true,
-        default: () => `ticket_${Date.now()}_${Math.floor(Math.random() * 10000)}`
+        unique: true
     },
     purchase_datetime: {
         type: Date,
-        default: Date.now,
         required: true
     },
     amount: {
@@ -19,7 +17,12 @@ const ticketSchema = new mongoose.Schema({
     purchaser: {
         type: String,
         required: true
-    }
+    },
+    products: [{
+        title: String,
+        quantity: Number,
+        price: Number
+    }]
 });
 
 const Ticket = mongoose.model('Ticket', ticketSchema);

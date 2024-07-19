@@ -1,9 +1,12 @@
 import Ticket from '../dao/models/ticketsModel.js';
+import { v4 as uuidv4 } from 'uuid';
 
 class TicketService {
     async createTicket(amount, purchaser) {
         try {
             const newTicket = new Ticket({
+                code: uuidv4(),
+                purchase_datetime: new Date(),
                 amount,
                 purchaser
             });

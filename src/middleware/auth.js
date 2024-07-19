@@ -29,3 +29,11 @@ export const isUser = (req, res, next) => {
         res.status(403).send('Acceso denegado');
     }
 };
+
+export const isSelfOrAdmin = (req, res, next) => {
+    if (req.session.user && (req.session.user.role === 'admin' || req.session.user._id === req.params.uid)) {
+        return next();
+    } else {
+        res.status(403).send('Acceso denegado');
+    }
+};

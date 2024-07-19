@@ -1,5 +1,8 @@
 import UsersMongoDAO from '../dao/models/usersModel.js';
 import CartsMongoDAO from '../dao/models/cartsModel.js';
+import ProductModel from '../dao/models/productsModel.js';
+import ticketsService from './ticketsService.js';
+import { sendPurchaseEmail } from './mailer.js';
 
 class CartService {
     async getCarts() {
@@ -83,6 +86,46 @@ class CartService {
             return cart;
         } catch (error) {
             console.error('Error al eliminar producto del carrito:', error);
+            throw error;
+        }
+    }
+
+    async purchaseCart(cartId, userEmail) {
+        try {
+            const cart = await this.getCartById(cartId);
+            if (!cart) {
+                throw new Error('Carrito no encontrado');
+            }
+
+            let totalAmount = 0;
+            const productsNotPurchased = [];
+
+            for (const item of cart.products) {
+                const product = await ProductModel.findById(item.product);
+                if (product.stock >= item.quantity) {
+                    product.stock -= item.quantity;
+                    totalAmount += product.price * item.quantity;
+                    await product.save();
+                } else {
+                    productsNotPurchased.push(item.product);
+                }
+            }
+
+            if (totalAmount > 0) {
+                const ticket = await ticketsService.createTicket(totalAmount, userEmail);
+
+                await sendPurchaseEmail(userEmail, ticket);
+            }
+
+            cart.products = cart.products.filter(item => productsNotPurchased.includes(item.product));
+            await cart.save();
+
+            return {
+                message: 'Compra realizada con éxito',
+                productsNotPurchased
+            };
+        } catch (error) {
+            console.error('Error al procesar la compra:', error);
             throw error;
         }
     }

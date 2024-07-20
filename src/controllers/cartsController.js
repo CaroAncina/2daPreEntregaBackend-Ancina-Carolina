@@ -1,7 +1,7 @@
 import CartService from '../services/cartsService.js';
 import ProductModel from '../dao/models/productsModel.js';
 import ticketsService from '../services/ticketsService.js';
-import { sendPurchaseEmail } from '../services/mailer.js';
+import  {sendPurchaseEmail}  from '../utils.js';
 
 export const getCarts = async (req, res) => {
     try {
@@ -81,7 +81,7 @@ export const removeProductFromCart = async (req, res) => {
     }
 };
 
-//endpoint para la compra
+// Endpoint para la compra
 export const purchaseCart = async (req, res) => {
     const { cid } = req.params;
     try {
@@ -105,7 +105,13 @@ export const purchaseCart = async (req, res) => {
         }
 
         if (totalAmount > 0) {
-            await ticketsService.createTicket(totalAmount, req.session.user.email);
+            const ticket = await ticketsService.createTicket({
+                amount: totalAmount,
+                purchaser: req.session.user.email,
+                products: cart.products.filter(item => !productsNotPurchased.includes(item.product))
+            });
+
+            await sendPurchaseEmail(req.session.user.email, ticket);
         }
 
         cart.products = cart.products.filter(item => productsNotPurchased.includes(item.product));

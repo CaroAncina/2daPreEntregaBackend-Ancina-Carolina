@@ -15,6 +15,7 @@ import cartsRouter from './routes/api/cartsRouter.js';
 import productsRouter from './routes/api/productsRouter.js';
 import messagesRouter from './routes/api/messagesRouter.js';
 import sessionsRouter from './routes/api/sessionsRouter.js';
+import ticketsRouter from './routes/api/ticketsRouter.js'
 import viewsRouter from './routes/views/viewsRouter.js';
 
 const app = express();
@@ -58,6 +59,7 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/messages', messagesRouter);
 app.use('/api/sessions', sessionsRouter);
+app.use ('/api/tickets',ticketsRouter);
 app.use('/', viewsRouter);
 
 // Inicializar servidor HTTP y configurar Socket.IO

@@ -11,5 +11,3 @@ router.put('/:uid', isAuthenticated, isSelfOrAdmin, updateUser);
 router.delete('/:uid', isAuthenticated, isAdmin, deleteUser);
 
 export default router;
-
-

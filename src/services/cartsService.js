@@ -2,7 +2,7 @@ import UsersMongoDAO from '../dao/models/usersModel.js';
 import CartsMongoDAO from '../dao/models/cartsModel.js';
 import ProductModel from '../dao/models/productsModel.js';
 import ticketsService from './ticketsService.js';
-import { sendPurchaseEmail } from './mailer.js';
+import { sendPurchaseEmail } from '../utils.js';
 
 class CartService {
     async getCarts() {
@@ -112,7 +112,11 @@ class CartService {
             }
 
             if (totalAmount > 0) {
-                const ticket = await ticketsService.createTicket(totalAmount, userEmail);
+                const ticket = await ticketsService.createTicket({
+                    amount: totalAmount,
+                    purchaser: userEmail,
+                    products: cart.products.filter(item => !productsNotPurchased.includes(item.product))
+                });
 
                 await sendPurchaseEmail(userEmail, ticket);
             }

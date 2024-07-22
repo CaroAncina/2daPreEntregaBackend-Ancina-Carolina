@@ -1,3 +1,5 @@
+import { userDto } from '../dao/DTOs/users.dto.js';
+
 class SessionsController {
     async register(req, res) {
         res.redirect('/login');
@@ -49,7 +51,8 @@ class SessionsController {
 
     async current(req, res) {
         if (req.session.user) {
-            res.status(200).json(req.session.user);
+            const user = userDto(req.session.user);
+            res.status(200).json(user);
         } else {
             res.status(401).json({ error: 'Usuario no autenticado' });
         }

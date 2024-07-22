@@ -1,7 +1,7 @@
 import CartService from '../services/cartsService.js';
 import ProductModel from '../dao/models/productsModel.js';
 import ticketsService from '../services/ticketsService.js';
-import  {sendPurchaseEmail}  from '../utils.js';
+import  {sendPurchaseEmail}  from '../services/mailer.js';
 
 export const getCarts = async (req, res) => {
     try {

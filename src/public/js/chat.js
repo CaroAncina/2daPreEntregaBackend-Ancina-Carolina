@@ -2,30 +2,23 @@ const socket = io();
 
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.getElementById('chat-messages');
-const userRoleElement = document.getElementById('userRole');
-const btnEnviar = document.getElementById('send');
+const userIdElement = document.getElementById('userId');
+const errorContainer = document.getElementById('error-container');
 
-if (userRoleElement) {
-    const userRole = userRoleElement.value;
+chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userId = userIdElement.value; 
+    const message = document.getElementById('message').value;
 
-    if (userRole === 'user') {
-        if (chatForm) {
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const message = document.getElementById('message').value;
-
-                if (!message.trim()) {
-                    alert('Debe ingresar un mensaje');
-                    return;
-                }
-
-                socket.emit('nuevoMensaje', { messageText: message });
-
-                document.getElementById('message').value = '';
-            });
-        }
+    if (!message.trim()) {
+        alert('Debe ingresar un mensaje');
+        return;
     }
-}
+
+    socket.emit('nuevoMensaje', { user: userId, message });
+
+    document.getElementById('message').value = '';
+});
 
 socket.on('mensajes', (mensajes) => {
     chatMessages.innerHTML = '';
@@ -36,8 +29,7 @@ socket.on('mensajes', (mensajes) => {
     });
 });
 
-socket.on('nuevoMensaje', (mensaje) => {
-    const messageElement = document.createElement('p');
-    messageElement.innerHTML = `<strong>${mensaje.user.email}</strong>: ${mensaje.text}`;
-    chatMessages.appendChild(messageElement);
+socket.on('errorMensaje', (error) => {
+    errorContainer.innerText = error;
+    errorContainer.style.display = 'block';
 });

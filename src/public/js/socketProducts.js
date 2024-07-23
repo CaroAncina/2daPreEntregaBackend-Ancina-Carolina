@@ -1,5 +1,6 @@
 import productsModel from '../../dao/models/productsModel.js';
 import messagesModel from '../../dao/models/messagesModel.js';
+import usersModel from '../../dao/models/usersModel.js'
 
 export default (io) => {
     io.on('connection', (socket) => {
@@ -61,20 +62,30 @@ export default (io) => {
                 });
         });
 
-         //CHAT
-         messagesModel.find().populate('user').lean().then((mensajes) => {
+        // CHAT
+        messagesModel.find().populate('user', 'email').lean().then((mensajes) => {
             socket.emit('mensajes', mensajes);
         });
 
-        socket.on('nuevoMensaje', (mensaje) => {
-            messagesModel.create(mensaje)
-                .then(() => messagesModel.find().lean())
-                .then((mensajes) => {
-                    io.emit('mensajes', mensajes);
-                })
-                .catch((error) => {
-                    console.error('Error al guardar el mensaje:', error);
-                });
+        socket.on('nuevoMensaje', async (mensaje) => {
+            try {
+                const user = await usersModel.findById(mensaje.user).select('email role');
+                if (!user) {
+                    throw new Error('Usuario no encontrado');
+                }
+                
+                // Verificar si el usuario tiene el rol "user"
+                if (user.role !== 'user') {
+                    socket.emit('errorMensaje', 'Solo los usuarios pueden enviar mensajes');
+                    return;
+                }
+
+                const nuevoMensaje = await messagesModel.create({ user: user._id, text: mensaje.message });
+                const mensajes = await messagesModel.find().populate('user', 'email').lean();
+                io.emit('mensajes', mensajes); 
+            } catch (error) {
+                console.error('Error al guardar el mensaje:', error);
+            }
         });
 
         socket.on('disconnect', () => {

@@ -44,8 +44,9 @@ class ViewsService {
     }
 
     async getMessages() {
-        return await messagesModel.find().lean();
+        return await messagesModel.find().populate('user', 'email').lean();
     }
+    
 }
 
 export default new ViewsService();

@@ -12,6 +12,7 @@ class SessionsController {
     async login(req, res) {
         if (!req.user) return res.status(400).send({ status: "error", error: "Datos incompletos" });
         req.session.user = {
+            _id: req.user._id,
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,
@@ -39,6 +40,7 @@ class SessionsController {
 
     async githubCallback(req, res) {
         req.session.user = {
+            _id: req.user._id,
             first_name: req.user.first_name,
             last_name: req.user.last_name,
             email: req.user.email,

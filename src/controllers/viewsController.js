@@ -55,7 +55,10 @@ class ViewsController {
     async getChatPage(req, res) {
         try {
             const messages = await viewsService.getMessages();
-            res.render('chat', { messages });
+            res.render('chat', {
+                userId: req.session.user._id, 
+                messages
+            });
         } catch (error) {
             console.error('Error al obtener los mensajes:', error);
             res.status(500).send('Error al obtener los mensajes');

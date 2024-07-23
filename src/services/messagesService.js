@@ -1,19 +1,13 @@
-import MessagesMongoDAO from '../dao/classes/messages.dao.js';
-import userService from '../dao/models/usersModel.js';
+import MessagesDAO from '../dao/classes/messages.dao.js';
 
 export default class MessageService {
     static async getMessages() {
-        return await MessagesMongoDAO.findAll();
+        return await MessagesDAO.findAll();
     }
 
-    static async createMessage(userId, messageText) {
+    static async createMessage(userId, userEmail, messageText) {
         try {
-            const user = await userService.findById(userId);
-            if (!user) {
-                throw new Error(`Usuario con ID ${userId} no encontrado`);
-            }
-
-            const newMessage = await MessagesMongoDAO.create({ user: userId, text: messageText });
+            const newMessage = await MessagesDAO.create({ user: userId, userEmail, text: messageText });
             return newMessage;
         } catch (error) {
             console.error('Error al guardar el mensaje:', error);

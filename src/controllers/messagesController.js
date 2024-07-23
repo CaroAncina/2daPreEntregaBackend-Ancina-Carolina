@@ -11,14 +11,16 @@ export const getMessages = async (req, res) => {
 };
 
 export const createMessage = async (req, res) => {
-    const { user, message } = req.body;
+    const { message } = req.body;
+    const userId = req.session.user._id;  
+    const userEmail = req.session.user.email;
 
-    if (!user || !message) {
+    if (!userId || !message) {
         return res.status(400).json({ status: "error", error: "Faltan parámetros" });
     }
 
     try {
-        const newMessage = await MessageService.createMessage(user, message);
+        const newMessage = await MessageService.createMessage(userId,userEmail, message);
         res.status(201).json({ status: "success", payload: newMessage });
     } catch (error) {
         console.error('Error al guardar el mensaje:', error);
